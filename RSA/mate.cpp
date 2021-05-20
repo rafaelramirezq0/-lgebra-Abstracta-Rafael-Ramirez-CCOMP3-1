@@ -1,6 +1,5 @@
 #include <iostream>
 #include <ctime>
-//#include <time.h>
 using namespace std;
 
 void swap(int *a, int *b)
@@ -11,7 +10,7 @@ void swap(int *a, int *b)
   *b = tmp;
 }
 
-int modulo(int a, int n){
+long modulo(int a, int n){
     int r = a-n * (a/n);
     
     if(r<0){
@@ -21,7 +20,7 @@ int modulo(int a, int n){
     return r;
 }
 
-int euclides(int a, int b){
+long euclides(int a, int b){
 
   if (modulo(a,b) != 0){
     int x = b;
@@ -36,7 +35,7 @@ int euclides(int a, int b){
 
 }
 
-int inversa(int a, int b, int* x, int* y){
+long inversa(int a, int b, int* x, int* y){
 
     if (a == 0)
     {
@@ -85,7 +84,7 @@ bool confirm_prime(int num){
     return true;       // returns 1 osea es primo
 }
 
-int crear_random_primo(int min, int max){
+long crear_random_primo(int min, int max){
     srand(time(0));
     int numero = modulo(rand(),max-min)+min;
 
@@ -105,16 +104,16 @@ int crear_random_primo(int min, int max){
     }
 }
 
-long potencia(int base, int m){
+long long potencia(int base, int m){
     if (m != 0)
         return (base*potencia(base, m-1));
     else
         return 1;
 }
 
-int potencia_mod(int x,int m, int N){
+long potencia_mod(int x,int m, int N){
     int counter = 1, potenciar = 1;
-    int eme = m, elevado = x, rpta = x;
+    long eme = m, elevado = x, rpta = x;
     
     for(int i=2; i<m; i+=i){
         counter++;
