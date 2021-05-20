@@ -49,6 +49,7 @@ public:
             index_abc = return_index(abecedario, mensaje[i]);
             index_cifrado = mod(potencia_mod(index_abc, e_cpublica, N),N);
             encript_array[i] = index_cifrado;
+            cout<<"Letra NUM "<<i<<" -> ";
             cout<<"index original de la letra: "<<index_abc<<'\t'<<'\t'<<"encript_array["<<i<<"]: "<<encript_array[i]<<endl;
         }
         return encript_array;
@@ -61,8 +62,10 @@ public:
         for(int i=0; i<mensaje_original.length(); i++){
             index_descifrado = mod(potencia_mod(array_encriptado[i],d_cprivada,N),N);
             decripted_array[i] = index_descifrado;
+            cout<<"Letra NUM "<<i<<" -> ";
             cout<<"decripted_array["<<i<<"]: "<<decripted_array[i]<<'\t'<<'\t'<<'\t'<<"Numero cuando estaba cifrado:"<<array_encriptado[i]<<endl;
         }
+        cout<<"El valor de decripted_array[i] es representativo, no es el algoritmo comleto xq esta por verse :)";
         return decripted_array;
     }
 };
