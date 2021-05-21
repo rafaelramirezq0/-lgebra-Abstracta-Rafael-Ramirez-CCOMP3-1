@@ -7,8 +7,6 @@ using namespace std;
 class RSA {
 
 private: 
-    //long p = 17;                                     // Usar esto para 'p' específico
-    //long q = 43;                                     // Usar esto para 'q' específico
     int p = crear_random_primo(9,30);
     int q = crear_random_primo(31,70);
     long fi_N = (p-1)*(q-1);
@@ -44,6 +42,11 @@ public:
     }
 
     long* ENCRYPT(string mensaje, RSA& RECEPTOR){
+        /*
+        RECEPTOR.N = 391;
+        RECEPTOR.e_cpublica = 29;
+        */
+        
         //cout<<"RECEPTOR-> p: "<<RECEPTOR.p<<"      q: "<<RECEPTOR.q<<"      N: "<<RECEPTOR.N<<"      fi_n: "<<RECEPTOR.fi_N<<endl;
         long index_abc, index_cifrado;
         long* encript_array{new long[mensaje.length()]{} };cout<<'\t'<<"Cifrado:"<<endl;
@@ -58,6 +61,17 @@ public:
     }
 
     long* DECRYPT(long* array_encriptado, string mensaje_original){
+        /*
+        p = 17;
+        q = 23;  
+        N = p*q;
+        fi_N = (p-1)*(q-1);
+        x0, y0;
+        e_cpublica = 101;
+        d_cprivada = inversa2(fi_N, e_cpublica, x0, y0);
+        */
+        
+        
         long index_descifrado;
         long* decripted_array{new long[sizeof(array_encriptado)]{} };cout<<'\t'<<"Descifrado:"<<endl;
 
