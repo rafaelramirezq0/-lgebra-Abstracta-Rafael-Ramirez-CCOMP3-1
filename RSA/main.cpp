@@ -5,33 +5,36 @@
 using namespace std;
 
 class RSA {
-    /*
-    int p = 17;
-    int q = 43;
-    int n = p*q;
-    int fi_n = (p-1)*(q-1)
-    int e_cpublica = modulo(crear_random_primo(71,300),fi_n)*/
+
 private: 
+    //long p = 17;                                     // Usar esto para 'p' específico
+    //long q = 43;                                     // Usar esto para 'q' específico
     int p = crear_random_primo(9,30);
     int q = crear_random_primo(31,70);
-    int fi_n = (p-1)*(q-1);
-    int x0, y0;
-    
-
+    long fi_N = (p-1)*(q-1);
+    long x0, y0;
+    long d_cprivada = inversa2(fi_N, e_cpublica, x0, y0);
 
 public:
     RSA(){}
+
     string abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,. ";
-    int N = p*q;
-    int e_cpublica = modulo(crear_random_primo(71,300),fi_n);
+    long N = p*q;
+    //long e_cpublica = 101;                                                       // Usar esta para clave 'e' específica
+    long e_cpublica = modulo(crear_random_primo(71,300),fi_N);
 
-    int d_cprivada = inversa(fi_n, e_cpublica, &x0, &y0);
-    
-    void get_p_q(){
-        cout<<p<<"        "<<q<<endl;
-    }
+    void get_DATA(){
+        cout<<"VALORES PROPIOS:"<<'\n'<<
+        "p: "<<p<<endl<<
+        "q: "<<q<<endl<<
+        "N: "<<N<<endl<<
+        "fi_n: "<<fi_N<<endl<<
+        "clave e publica: "<<e_cpublica<<endl<<
+        "clave d privada: "<<d_cprivada<<endl;
+        cout<<endl;
+    }   
 
-    int mod(int a, int b){
+    long mod(long a, long b){
         return modulo(a,b);
     }
     int return_index(string abc, char caracter){
@@ -40,14 +43,13 @@ public:
         }
     }
 
-    int* ENCRYPT(string mensaje, RSA& RECEPTOR){
-        //cout<<"RECEPTOR:"<<RECEPTOR.p<<"      "<<RECEPTOR.q<<endl;
-        //cout<<"EMISOR:"<<p<<"      "<<q<<endl;
-        int index_abc, index_cifrado;
-        int* encript_array{new int[mensaje.length()]{} };
+    long* ENCRYPT(string mensaje, RSA& RECEPTOR){
+        //cout<<"RECEPTOR-> p: "<<RECEPTOR.p<<"      q: "<<RECEPTOR.q<<"      N: "<<RECEPTOR.N<<"      fi_n: "<<RECEPTOR.fi_N<<endl;
+        long index_abc, index_cifrado;
+        long* encript_array{new long[mensaje.length()]{} };
         for(int i=0; i<mensaje.length(); i++){
             index_abc = return_index(abecedario, mensaje[i]);
-            index_cifrado = mod(potencia_mod(index_abc, e_cpublica, N),N);
+            index_cifrado = mod(potencia_mod(index_abc, RECEPTOR.e_cpublica, RECEPTOR.N),RECEPTOR.N);
             encript_array[i] = index_cifrado;
             cout<<"Letra NUM "<<i<<" -> ";
             cout<<"index original de la letra: "<<index_abc<<'\t'<<'\t'<<"encript_array["<<i<<"]: "<<encript_array[i]<<endl;
@@ -55,9 +57,9 @@ public:
         return encript_array;
     }
 
-    int* DECRYPT(int* array_encriptado, string mensaje_original){
-        int index_descifrado;
-        int* decripted_array{new int[sizeof(array_encriptado)]{} };
+    long* DECRYPT(long* array_encriptado, string mensaje_original){
+        long index_descifrado;
+        long* decripted_array{new long[sizeof(array_encriptado)]{} };
 
         for(int i=0; i<mensaje_original.length(); i++){
             index_descifrado = mod(potencia_mod(array_encriptado[i],d_cprivada,N),N);
@@ -65,7 +67,7 @@ public:
             cout<<"Letra NUM "<<i<<" -> ";
             cout<<"decripted_array["<<i<<"]: "<<decripted_array[i]<<'\t'<<'\t'<<'\t'<<"Numero cuando estaba cifrado:"<<array_encriptado[i]<<endl;
         }
-        cout<<"El valor de decripted_array[i] es representativo, no es el algoritmo comleto xq esta por verse :)";
+        //cout<<"El valor de decripted_array[i] es representativo, no es el algoritmo comleto xq esta por verse :)";
         return decripted_array;
     }
 };
@@ -74,13 +76,15 @@ public:
 int main(){
     RSA Bernardo;   // emisor
     RSA Alicia;     // receptor
-    
+
     string mensaje = "TI";
 
+    Bernardo.get_DATA();
+    Alicia.get_DATA();
     "ENCRIPTAR";
-    int* msg_encriptado = Bernardo.ENCRYPT(mensaje, Alicia);
+    long* msg_encriptado = Bernardo.ENCRYPT(mensaje, Alicia);
 
     cout<<endl;
 
-    int* msg_descifrado = Alicia.DECRYPT(msg_encriptado, mensaje);
+    long* msg_descifrado = Alicia.DECRYPT(msg_encriptado, mensaje);
 }
