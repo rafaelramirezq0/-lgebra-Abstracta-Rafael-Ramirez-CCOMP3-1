@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <tuple>
 using namespace std;
 
 void swap(int *a, int *b)
@@ -10,7 +11,7 @@ void swap(int *a, int *b)
   *b = tmp;
 }
 
-long modulo(int a, int n){
+long modulo(long a, long n){
     int r = a-n * (a/n);
     
     if(r<0){
@@ -20,7 +21,7 @@ long modulo(int a, int n){
     return r;
 }
 
-long euclides(int a, int b){
+long long euclides(long a, long b){
 
   if (modulo(a,b) != 0){
     int x = b;
@@ -35,7 +36,21 @@ long euclides(int a, int b){
 
 }
 
-long inversa(int a, int b, int* x, int* y){
+long long inversa2(long a, long b, long& x, long& y  ){             // (a * x) + (b * y) = d
+    x = 1, y = 0;                                                   // (y1 * x) + (x1 * y) = a1
+    long x1 = 0, y1 = 1, a1 = a, b1 = b;
+    while (b1) {
+        long q = a1 / b1;
+        tie(x, x1) = make_tuple(x1, x - q * x1);
+        tie(y, y1) = make_tuple(y1, y - q * y1);
+        tie(a1, b1) = make_tuple(b1, a1 - q * b1);
+    }
+    //cout<<'\t'<<'\t'<<x<<endl;
+    return y;
+}
+
+
+long long inversa(long a, long b, long* x, long* y){
 
     if (a == 0)
     {
@@ -44,8 +59,8 @@ long inversa(int a, int b, int* x, int* y){
         return b;
     }
  
-    int x1, y1;     // x1= y en el algoritmo        y1= x en el algoritmo
-    int mcd = inversa(b%a, a, &x1, &y1);
+    long x1, y1;     // x1= y en el algoritmo        y1= x en el algoritmo
+    long mcd = inversa(b%a, a, &x1, &y1);
 
     *x = y1 - (b/a) * x1;
     *y = x1;
@@ -73,7 +88,7 @@ int factores(int num){
     }
 }
 
-bool confirm_prime(int num){
+bool confirm_prime(long num){
     for(int i=2; i<=num/2; i++){
         int j{num-1};
         if( modulo(num,i) == 0 || modulo(num,j) == 0 ){
@@ -86,7 +101,7 @@ bool confirm_prime(int num){
 
 long crear_random_primo(int min, int max){
     srand(time(0));
-    int numero = modulo(rand(),max-min)+min;
+    long numero = modulo(rand(),max-min)+min;
 
     if(confirm_prime(numero) == true){
         return numero;
@@ -95,7 +110,7 @@ long crear_random_primo(int min, int max){
     else{
         while(confirm_prime(numero) == false){
             srand(time(0));
-            int numero = modulo(rand(),max-min)+min;
+            long numero = modulo(rand(),max-min)+min;
 
             if(confirm_prime(numero) == true){
                 return numero;
@@ -104,14 +119,14 @@ long crear_random_primo(int min, int max){
     }
 }
 
-long long potencia(int base, int m){
+long long potencia(long base, long m){
     if (m != 0)
         return (base*potencia(base, m-1));
     else
         return 1;
 }
 
-long potencia_mod(int x,int m, int N){
+long long potencia_mod(long x,long m, long N){
     int counter = 1, potenciar = 1;
     long eme = m, elevado = x, rpta = x;
     
