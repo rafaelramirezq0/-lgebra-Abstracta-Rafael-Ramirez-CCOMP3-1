@@ -24,7 +24,7 @@ public:
     long e_cpublica = modulo(crear_random_primo(71,300),fi_N);
 
     void get_DATA(){
-        cout<<"VALORES PROPIOS:"<<'\n'<<
+        cout<<"VARIABLES:"<<'\n'<<
         "p: "<<p<<endl<<
         "q: "<<q<<endl<<
         "N: "<<N<<endl<<
@@ -46,28 +46,28 @@ public:
     long* ENCRYPT(string mensaje, RSA& RECEPTOR){
         //cout<<"RECEPTOR-> p: "<<RECEPTOR.p<<"      q: "<<RECEPTOR.q<<"      N: "<<RECEPTOR.N<<"      fi_n: "<<RECEPTOR.fi_N<<endl;
         long index_abc, index_cifrado;
-        long* encript_array{new long[mensaje.length()]{} };
+        long* encript_array{new long[mensaje.length()]{} };cout<<'\t'<<"Cifrado:"<<endl;
         for(int i=0; i<mensaje.length(); i++){
             index_abc = return_index(abecedario, mensaje[i]);
             index_cifrado = mod(potencia_mod(index_abc, RECEPTOR.e_cpublica, RECEPTOR.N),RECEPTOR.N);
             encript_array[i] = index_cifrado;
-            cout<<"Letra NUM "<<i<<" -> ";
-            cout<<"index original de la letra: "<<index_abc<<'\t'<<'\t'<<"encript_array["<<i<<"]: "<<encript_array[i]<<endl;
+            cout<<'\t'<<'\t'<<"Letra NUM "<<i<<" -> ";
+            cout<<'\t'<<'\t'<<"index original de la letra: "<<index_abc<<'\t'<<'\t'<<"encript_array["<<i<<"]: "<<encript_array[i]<<endl;
         }
         return encript_array;
     }
 
     long* DECRYPT(long* array_encriptado, string mensaje_original){
         long index_descifrado;
-        long* decripted_array{new long[sizeof(array_encriptado)]{} };
+        long* decripted_array{new long[sizeof(array_encriptado)]{} };cout<<'\t'<<"Descifrado:"<<endl;
 
         for(int i=0; i<mensaje_original.length(); i++){
             index_descifrado = mod(potencia_mod(array_encriptado[i],d_cprivada,N),N);
             decripted_array[i] = index_descifrado;
-            cout<<"Letra NUM "<<i<<" -> ";
-            cout<<"decripted_array["<<i<<"]: "<<decripted_array[i]<<'\t'<<'\t'<<'\t'<<"Numero cuando estaba cifrado:"<<array_encriptado[i]<<endl;
+            cout<<'\t'<<'\t'<<"Letra NUM "<<i<<" -> ";
+            cout<<'\t'<<'\t'<<"decripted_array["<<i<<"]: "<<decripted_array[i]<<'\t'<<'\t'<<'\t'<<"Numero cuando estaba cifrado:"<<array_encriptado[i]<<endl;
         }
-        //cout<<"El valor de decripted_array[i] es representativo, no es el algoritmo comleto xq esta por verse :)";
+        // El valor de decripted_array[i] es representativo, no es el algoritmo comleto xq esta por verse :);
         return decripted_array;
     }
 };
@@ -79,8 +79,8 @@ int main(){
 
     string mensaje = "TI";
 
-    Bernardo.get_DATA();
-    Alicia.get_DATA();
+    cout<<"Bernardo "; Bernardo.get_DATA();
+    cout<<"Alicia "; Alicia.get_DATA();
     "ENCRIPTAR";
     long* msg_encriptado = Bernardo.ENCRYPT(mensaje, Alicia);
 
